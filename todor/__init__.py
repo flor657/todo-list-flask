@@ -10,7 +10,7 @@ def create_app():
     #configuracion del proyecto
     app.config.from_mapping(
         DEBUG = False,
-        SECRET_KEY = 'devtodo',
+        SECRET_KEY = 'dev',
         SQLALCHEMY_DATABASE_URI = "sqlite:///todolist.db"
     )
 

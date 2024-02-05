@@ -1,34 +1,90 @@
-{% extends 'base.html' %}
+
 
 
 {% block content %}
+    <!--===============================================================================================-->	
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename = 'images/icons/favicon.ico')}}">
+    <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'vendor/bootstrap/css/bootstrap.min.css')}}">
+    <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'fonts/font-awesome-4.7.0/css/font-awesome.min.css')}}">
+    <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'vendor/animate/animate.css')}}">
+    <!--===============================================================================================-->	
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'vendor/css-hamburgers/hamburgers.min.css')}}">
+    <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'vendor/animsition/css/animsition.min.css')}}">
+    <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'vendor/select2/select2.min.css')}}">
+    <!--===============================================================================================-->	
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'vendor/daterangepicker/daterangepicker.css')}}">
+    <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/util.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/main.css')}}">
+    <!--===============================================================================================-->
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-sm-8">
-            <div class="card">
-                <div class="card-header">
-                    <h1 class="text-center">{% block title %}Iniciar sesion{% endblock %}</h1>
+
+
+
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <form class="login100-form validate-form p-l-55 p-r-55 p-t-178" action="" method="post">
+                <span class="login100-form-title">
+                    Iniciar sesion
+                </span>
+            
+                <div class="form-group wrap-input100 validate-input m-b-16" data-validate="Please enter username">
+                    <input class="input100" type="text" name="username" id="username" placeholder="Username" required minlength="4" maxlength="20">
+                    <span class="focus-input100"></span>
                 </div>
-                <div class="card-body">
-                    <form action="" method="post">
-                        <div class="form-group">
-                            <label for="username">Nombre de usuario</label>
-                            <input type="text" name="username" id="username" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Contraseña</label>
-                            <input type="password" name="password" id="password" class="form-control" required>
-                        </div>
-                        <br>
-                        <div class="text-center">
-                            <input type="submit" class="btn btn-primary" value="Iniciar sesion">
-                        </div>
-                    </form>
+            
+                <div class="form-group wrap-input100 validate-input" data-validate="Please enter password">
+                    <input class="input100" type="password" name="password" id="password" placeholder="Password" required minlength="6" maxlength="40">
+                    <span class="focus-input100"></span>
                 </div>
-            </div>
+                <input type="hidden" name="rol" value="user" id="rol">
+
+            
+                <br>
+                <div class="container-login100-form-btn">
+                    <input type="hidden" name="rol" value="user" id="rol">
+                    <button class="login100-form-btn">
+                        Sign in
+                    </button>
+                </div>
+            
+                <div class="flex-col-c p-t-170 p-b-40">
+                    <span class="txt1 p-b-9">
+                        Don’t have an account?
+                    </span>
+            
+                    <a href="{{ url_for('auth.register')}}" class="txt3">
+                        Registrarse
+                    </a>
+                </div>
+            </form>
+            
         </div>
     </div>
 </div>
+
+<!--===============================================================================================-->
+    <script src="{{ url_for('static', filename = 'vendor/jquery/jquery-3.2.1.min.js')}}"></script>
+<!--===============================================================================================-->
+    <script src="{{ url_for('static', filename = 'vendor/animsition/js/animsition.min.js')}}"></script>
+<!--===============================================================================================-->
+    <script src="{{ url_for('static', filename = 'vendor/bootstrap/js/popper.js')}}"></script>
+    <script src="{{ url_for('static', filename = 'vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+<!--===============================================================================================-->
+    <script src="{{ url_for('static', filename = 'vendor/select2/select2.min.js')}}"></script>
+<!--===============================================================================================-->
+    <script src="{{ url_for('static', filename = 'vendor/daterangepicker/moment.min.js')}}"></script>
+    <script src="{{ url_for('static', filename = 'vendor/daterangepicker/daterangepicker.js')}}"></script>
+<!--===============================================================================================-->
+    <script src="{{ url_for('static', filename = 'vendor/countdowntime/countdowntime.js')}}"></script>
+<!--===============================================================================================-->
+    <script src="{{ url_for('static', filename = 'js/main.js')}}"></script>
+
 
 {% endblock %}

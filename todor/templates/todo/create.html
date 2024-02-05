@@ -1,9 +1,53 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Hacer una solicitud AJAX para obtener la lista de usuarios
+        $.ajax({
+            type: 'GET',
+            url: '{{url_for("auth.get_users")}}',
+            success: function (data) {
+                // Iterar sobre la lista de usuarios y agregar opciones al select
+                data.users.forEach(function (user) {
+                    $('#assigned_to').append('<option value="' + user.id + '">' + user.username + '</option>');
+                });
+            }
+        });
+
+
+        // Manejar el evento de envío del formulario
+        $('form').submit(function (event) {
+            event.preventDefault();  // Evitar el envío automático del formulario
+
+            // Después de que se haya completado con éxito, muestra la alerta SweetAlert
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 1500,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: "success",
+                title: "Tarea creada"
+            }).then(function () {
+                // Después de cerrar la alerta, envía el formulario
+                $('form').get(0).submit();
+            });
+        });
+    });
+    
+</script>
+
+
 <section class="container-sm">
     <h3 class="text-center mt-3 mb-3">{% block title %}Ingresar Tarea{% endblock %}</h3>
-    <form action="" method="post">
+    <form action="" method="post" style="max-width: 400px; margin: auto;">
         <div class="form-group">
             <label for="title">Titulo</label>
             <input type="text" class="form-control" name="title" id="title" required>
@@ -12,10 +56,17 @@
             <label for="desc">Descripción</label>
             <textarea class="form-control" id="desc" name="desc" rows="3"></textarea>
         </div>
+        <div class="form-group">
+            <label for="assigned_to">Asignar a:</label>
+            <select class="form-control" id="assigned_to" name="assigned_to">
+                <option value="">------------------- Elija un nombre -------------------</option>
+                <!-- Opciones se agregarán dinámicamente aquí a través de JavaScript -->
+            </select>
+        </div>        
         <br>
         <div class="text-center">
-            <input type="submit" class="btn btn-primary" value="Guardar">
-            <a href="{{url_for('todo.index')}}" class="btn btn-secondary">Cancelar</a>
+            <input type="submit" class="btn btn-primary" value="Guardar" id="showNotification">
+            <a href="{{url_for('todo.index')}}" class="btn btn-secondary"><i class="bi bi-x"></i> Cancelar</a>
         </div>
     </form>
 </section>

@@ -1,44 +1,104 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<!-- DataTables JS -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+
+<script type="text/javascript" src="{{url_for('static', filename='js/scripts.js')}}"></script>
+
+
+
+
+
+<div  class="container ">
+    
 <section class="container-fluid">
     <nav class="navbar">
         <h1>{% block title %}Lista de tareas{% endblock %}</h1>
-        <a href="{{url_for('todo.create')}}" class="btn btn-success">Nuevo</a>
+        {% if g.user.rol == 'admin' %}
+            <a href="{{url_for('todo.create')}}" class="btn btn-success"><i class="bi bi-plus"></i> Crear nueva tarea</a>
+        {% endif %}
     </nav>
-    <table class="table">
-        <thead>
-            <tr>
-                <th class="col">Tareas</th>
-                <th class="col">Estado</th>
-                <th class="col" colspan="2">Opciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for todo in todos | reverse %}
-            {% if g.user.id == todo.created_by %}
-            <tr>
-                <td>
-                    <h5>{{todo.title}}</h5>
-                    <p>{{todo.desc}}</p>
-                </td>
-                <td>
-                    {% if todo.state == false %}
-                    <span class="text-warning">Incompleto</span>
-                    {% else %}
-                    <span class="text-success">Completado</span>
+
+
+    <div  id="demo_info" class="box">
+        <table  id="example" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Tareas</th>
+                    <th>Usuarios</th>
+                    <th>Estado</th>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for todo in todos | reverse %}
+                {% if g.user.id == todo.created_by or g.user.id == todo.assigned_to_id or g.user.rol == 'admin' %}
+                        <tr>
+                            <td>
+                                <h5>{{ todo.title }}</h5>
+                                <p>{{ todo.desc }}</p>
+                            </td>
+                            <td>
+                                {% if todo.assigned_to %}
+                                    <span>{{ todo.assigned_to.username }}</span>
+                                {% else %}
+                                    <p>No asignado</p>
+                                {% endif %}
+                            </td> 
+                            <td>
+                                {% if todo.state == false %}
+                                    <span class="text-warning">Incompleto</span>
+                                {% else %}
+                                    <span class="text-success">Completado</span>
+                                {% endif %}
+                            </td>                 
+                            <td>
+                                <a href="{{ url_for('todo.update', id=todo.id) }}" class="btn btn-info btn-sm"><i class="bi bi-pencil-square"></i> Editar</a>
+                            </td>
+                            <td>
+                            {% if g.user.rol == 'admin' %}
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="confirmarEliminacion('{{ url_for('todo.delete', id=todo.id) | safe }}')"><i class="bi bi-archive"></i> Eliminar</button>
+                            {% endif %}
+                            </td>
+                        </tr>
                     {% endif %}
-                </td>
-                <td>
-                    <a href="{{url_for('todo.update', id = todo.id)}}" class="btn btn-info btn-sm">Editar</a>
-                </td>
-                <td>
-                    <a href="{{url_for('todo.delete', id = todo.id)}}" class="btn btn-danger btn-sm">Eliminar</a>
-                </td>
-            </tr>
-            {% endif %}
-            {% endfor %}
-        </tbody>
-    </table>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
 </section>
+<br>
+
+<!-- Nueva Modal de confirmación de Bootstrap 5 -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Confirmar Eliminación</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estás seguro de que quieres eliminar esta tarea?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x"></i> Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmarEliminarBtn"><i class="bi bi-archive"></i> Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 {% endblock %}

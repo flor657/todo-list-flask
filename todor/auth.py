@@ -9,25 +9,41 @@ from todor import db
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
-@bp.route('/register', methods= ('GET', 'POST'))
+@bp.route('/get_users', methods=['GET'])
+def get_users():
+    users = User.query.all()
+    user_list = [{'id': user.id, 'username': user.username} for user in users]
+    return {'users': user_list}
+
+
+
+@bp.route('/register', methods=('GET', 'POST'))
 def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
 
-        user = User(username, generate_password_hash(password))
+        # Verifica si ya hay usuarios en la base de datos
+        if User.query.count() == 0:
+            rol = 'admin'
+        else:
+            rol = 'user'
+
+        user = User(username=username, rol=rol, password=generate_password_hash(password))
 
         error = None
 
-        user_name = User.query.filter_by(username = username).first()
-        if user_name == None:
+        user_name = User.query.filter_by(username=username).first()
+        if user_name is None:
             db.session.add(user)
             db.session.commit()
             return redirect(url_for('auth.login'))
         else:
-            error = f'El usuario {username} ya esta registrado'
+            error = f'El usuario {username} ya está registrado'
         flash(error)
+
     return render_template('auth/register.html')
+
 
 @bp.route('/login', methods= ('GET', 'POST'))
 def login():
@@ -35,13 +51,6 @@ def login():
         username = request.form['username']
         password = request.form['password']
         error = None
-        
-    #validar los datos
-        # user = User.query.filter_by(username = username).first()
-        # if user == None:
-        #     error = 'Nombre de usuario incorrecto'
-        # elif not check_password_hash(user.password, password):
-        #     error = 'Contraseña incorrecta' 
         
         user = User.query.filter_by(username=username).first()
 
@@ -70,6 +79,7 @@ def load_logged_in_user():
 def logout():
     session.clear()
     return redirect(url_for('index'))
+
 
 
 import functools
