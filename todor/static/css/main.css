@@ -394,3 +394,44 @@ iframe {
     padding-right: 15px;
   }
 }
+
+/* Para pantallas más pequeñas */
+@media (max-width: 576px) {
+  .wrap-login100 {
+    width: 100%; /* Ancho del formulario al 100% en pantallas pequeñas */
+    padding: 20px; /* Agregar espacio interno */
+  }
+
+  .login100-form {
+    padding: 0; /* Eliminar relleno izquierdo y derecho */
+  }
+
+  .login100-form-title {
+    font-size: 24px; /* Reducir tamaño de fuente del título */
+    padding-top: 20px; /* Ajustar espacio superior */
+    padding-bottom: 15px; /* Ajustar espacio inferior */
+  }
+
+  .wrap-input100 {
+    width: 100%; /* Ancho del campo de entrada al 100% */
+    margin-bottom: 15px; /* Ajustar espacio entre campos */
+  }
+
+  .container-login100-form-btn {
+    width: 100%; /* Ancho del botón al 100% */
+  }
+
+  .flex-col-c {
+    padding-top: 20px; /* Ajustar espacio superior */
+    padding-bottom: 15px; /* Ajustar espacio inferior */
+  }
+
+  /* Reducir tamaño de fuente para dispositivos móviles */
+  .txt1 {
+    font-size: 14px;
+  }
+
+  .txt3 {
+    font-size: 16px;
+  }
+}
